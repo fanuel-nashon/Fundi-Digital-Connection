@@ -1,0 +1,10 @@
+#Roles
+1.Admin
+2.Customer
+3.Tradesperson
+
+#Permissions
+1.Create Users
+2.Book Service
+3.Deliver Service
+4.Rate
