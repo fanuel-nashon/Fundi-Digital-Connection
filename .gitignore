@@ -1,4 +1,6 @@
 *.log
+.credentials.md
+.checklist.md
 .DS_Store
 .env
 .env.backup

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -34,5 +35,14 @@ class PermissionSeeder extends Seeder
         $customer->syncPermissions(['book service', 'rate']);
 
         $tradesperson->syncPermissions(['deliver service']);
+
+        $users = User::all();
+
+        foreach($users as $user) {
+            if($user->role)
+            {
+                $user->assignRole($user->role);
+            }
+        }
     }
 }
