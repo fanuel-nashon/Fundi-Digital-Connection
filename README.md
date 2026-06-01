@@ -1,139 +1,91 @@
 # Fundi Digital Connection
 
-A Laravel platform connecting customers with skilled tradespeople in Tanzania, supporting plumbing, electrical, carpentry, welding, and masonry services.
+**Fundi Digital Connection** is a web platform that bridges the gap between customers and skilled tradespeople in Tanzania. It simplifies the process of finding, hiring, and reviewing local professionals across trades such as plumbing, electrical work, carpentry, welding, and masonry.
 
 ---
 
-## Requirements
+## The Problem
 
-| Tool | Version |
-|------|---------|
-| PHP | 8.2+ |
-| Composer | 2.x |
-| MySQL | 8.0+ |
-| Node.js + NPM | 18+ (Vite assets) |
+Customers in Tanzania struggle to find reliable, skilled tradespeople. There is no central platform where they can browse professionals, compare ratings, communicate directly, and book services — forcing them to rely on word-of-mouth which is slow and unreliable.
+
+On the other side, skilled tradespeople have no structured way to advertise their services, manage job requests, or build a digital reputation.
 
 ---
 
-## Setup
+## The Solution
 
-### 1. Clone and install
-```bash
-git clone <repository-url>
-cd Fundi-Digital-Connection
-composer install
-npm install && npm run build
-```
+Fundi Digital Connection provides a role-based platform with three distinct user groups:
 
-### 2. Environment
-```bash
-cp .env.example .env
-php artisan key:generate
-```
+### For Customers
+- Browse and filter tradespeople by **trade category**, **location**, **availability**, and **star rating**
+- View detailed profiles including bio and customer reviews
+- Send service requests with a preferred date and job description
+- Communicate with the tradesperson through a **built-in messaging thread**
+- Mark jobs as complete and leave a **star rating + written review**
 
-Set your database in `.env`:
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=fundi_digital_connection
-DB_USERNAME=root
-DB_PASSWORD=your_password
-MAIL_MAILER=log
-```
+### For Tradespeople
+- Set up a public profile with bio, trade category, and availability status
+- Receive and manage job requests — **accept or decline** with one click
+- Track job history (pending → accepted → complete → reviewed)
 
-### 3. Database
-```sql
-CREATE DATABASE fundi_digital_connection CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-```bash
-php artisan migrate
-php artisan db:seed
-php artisan permission:cache-reset
-php artisan serve
-```
-
-Visit: **http://127.0.0.1:8000**
+### For Admins
+- Create and manage all user accounts (customers, tradespeople, other admins)
+- Monitor platform activity through a central dashboard
+- View user statistics by role
 
 ---
 
-## Test Accounts  *(password: `password123`)*
+## Key Features
 
-| Role | Email |
-|------|-------|
-| Admin | abdul.admin@gmail.com |
-| Customer | asha.customer@gmail.com |
-| Tradesperson | juma.trades@gmail.com |
-
----
-
-## Role Access
-
-| Role | Dashboard | Can Do |
-|------|-----------|--------|
-| Admin | `/admin/dashboard` | Create, edit, delete users |
-| Customer | `/customer/dashboard` | Browse/filter tradespeople, request service, message, rate |
-| Tradesperson | `/tradesperson/tradesperson-dashboard` | Accept/decline jobs, manage profile |
+| Feature | Description |
+|---------|-------------|
+| Role-based access | Admin, Customer, and Tradesperson roles with separate dashboards |
+| Tradesperson profiles | Bio, trade category, availability, star rating, written reviews |
+| Service requests | Job booking with description, scheduled date, and status tracking |
+| Messaging | In-app conversation thread linked to each job request |
+| Ratings & Reviews | 1–5 star rating plus written review after job completion |
+| Search & Filter | Filter by category, location, availability, and minimum rating |
+| Secure auth | Login, forgot/reset password, strong password enforcement |
+| Admin user management | Admin-only account creation — no public registration |
 
 ---
 
-## Key Artisan Commands
+## Trade Categories
 
-```bash
-php artisan migrate:fresh --seed        # Full fresh install
-php artisan db:seed --class=PermissionSeeder
-php artisan db:seed --class=TradespersonProfileSeeder
-php artisan db:seed --class=ReviewSeeder
-php artisan permission:cache-reset      # Clear role/permission cache
-php artisan route:clear && php artisan config:clear
-php artisan route:list                  # View all routes
-```
+- Plumbing
+- Electrical
+- Carpentry
+- Welding
+- Masonry
 
 ---
 
-## Project Structure
+## Tech Stack
 
-```
-app/Http/Controllers/
-  Admin/       DashboardController, UsersController
-  Auth/        (Breeze) login, register, password reset
-  Customer/    DashboardController, JobRequestController, MessageController, ReviewController
-  Tradesperson/ ProfileController, JobRequestController
-
-app/Models/    User, TradespersonProfile, JobRequest, Message, Review
-
-database/
-  migrations/  All schema files
-  seeders/     PermissionSeeder, UsersTableSeeder, TradespersonProfileSeeder, ReviewSeeder
-
-resources/views/
-  layouts/     admin.blade.php, customer.blade.php, tradesperson.blade.php, guest.blade.php
-  admin/       dashboard, users (index, create, edit)
-  customer/    dashboard, tradesperson-show, request-service, messages, rate
-  tradesperson/ dashboard, profile, create-profile, job-requests
-  auth/        login, register, forgot-password, reset-password
-```
+| Layer | Technology |
+|-------|-----------|
+| Backend | Laravel 12 (PHP 8.2) |
+| Frontend | Bootstrap 5.3, Bootstrap Icons |
+| Database | MySQL 8 |
+| Auth | Laravel Breeze + Spatie Permission |
+| Mailing | Log driver (dev) / SMTP (production) |
 
 ---
 
-## Features
+## Project Status
 
-- [x] Auth: login, register, forgot/reset password
-- [x] Role-based access (Spatie Permission — admin, tradesperson, customer)
-- [x] Admin: user CRUD with SweetAlert delete confirmation
-- [x] Customer: browse & filter tradespeople (category, location, availability, rating)
-- [x] Customer: service request booking with preferred date
-- [x] Customer: messaging thread per job request
-- [x] Customer: star rating + written review after completion
-- [x] Tradesperson: accept/decline job requests
-- [x] Tradesperson: public profile (bio, category, availability)
-- [x] Strong passwords (min 8, uppercase, number, symbol)
-- [x] Password eye-toggle + strength meter
-- [x] Toast notifications + SweetAlert confirmations
+| Requirement | Status |
+|-------------|--------|
+| User authentication & roles | ✅ Complete |
+| Customer search & filter | ✅ Complete |
+| Ratings & written reviews | ✅ Complete |
+| Job request tracking (4 stages) | ✅ Complete |
+| In-app messaging | ✅ Complete |
+| Service booking with date | ✅ Complete |
+| Payment processing | 🔲 Planned |
+| Calendar scheduling interface | 🔲 Planned |
+| Real-time notifications | 🔲 Planned |
 
-## Pending
-- [ ] Payment processing (Stripe / M-Pesa)
-- [ ] Calendar interface for scheduling
-- [ ] Real-time notifications (Laravel Echo)
+---
 
+> For setup and development instructions, see [DEVELOPMENT.md](DEVELOPMENT.md)
