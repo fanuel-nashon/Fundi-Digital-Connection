@@ -4,10 +4,13 @@
 
 @section('content')
 
-    <div class="container">
-        <div class="row bg-primary" style="background-color: ">
-        </div> 
-    </div>
+    @role('admin')
+    
+        <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
+            Manage Users
+        </a>
+
+    @endrole
 
 
 @endsection

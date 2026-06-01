@@ -49,4 +49,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function tradespersonProfile()
+    {
+        return $this->hasOne(TradespersonProfile::class);
+    }
+
+    public function jobRequestsAsCustomer()
+    {
+        return $this->hasMany(JobRequest::class, 'customer_id');
+    }
+
+    public function jobRequestsAsTradesperson()
+    {
+        return $this->hasMany(JobRequest::class, 'tradesperson_id');
+    }
 }
