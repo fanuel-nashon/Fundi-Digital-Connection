@@ -42,9 +42,5 @@
 
         <button type="submit" class="btn-auth">Sign In</button>
 
-        <p class="text-center text-muted small mt-3 mb-0">
-            Don't have an account?
-            <a href="{{ route('register') }}" class="text-decoration-none fw-semibold" style="color:#f97316">Create one</a>
-        </p>
     </form>
 </x-guest-layout>

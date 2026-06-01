@@ -136,3 +136,4 @@ resources/views/
 - [ ] Payment processing (Stripe / M-Pesa)
 - [ ] Calendar interface for scheduling
 - [ ] Real-time notifications (Laravel Echo)
+
