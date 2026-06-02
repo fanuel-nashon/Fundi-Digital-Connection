@@ -50,6 +50,19 @@
                         <i class="bi bi-search me-1"></i>Find Tradesperson
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('customer.my-requests') ? 'active fw-semibold' : '' }}"
+                       href="{{ route('customer.my-requests') }}">
+                        <i class="bi bi-briefcase me-1"></i>My Requests
+                        @php
+                            $activeCount = \App\Models\JobRequest::where('customer_id', auth()->id())
+                                ->whereIn('status', ['pending','accepted','complete'])->count();
+                        @endphp
+                        @if($activeCount)
+                            <span class="badge bg-warning text-dark ms-1" style="font-size:.65rem">{{ $activeCount }}</span>
+                        @endif
+                    </a>
+                </li>
             </ul>
             <div class="d-flex align-items-center gap-3">
                 <span class="text-muted small d-none d-md-inline">

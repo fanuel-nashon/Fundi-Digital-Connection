@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobRequest;
 use App\Models\TradespersonProfile;
 
 class DashboardController extends Controller
@@ -51,5 +52,15 @@ class DashboardController extends Controller
         });
 
         return view('customer.tradesperson-show', compact('profile', 'recentReviews'));
+    }
+
+    public function myRequests()
+    {
+        $requests = JobRequest::with(['tradesperson.tradespersonProfile', 'review'])
+            ->where('customer_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return view('customer.my-requests', compact('requests'));
     }
 }

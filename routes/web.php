@@ -44,6 +44,7 @@ Route::middleware(['auth', 'is_role:tradesperson'])->prefix('tradesperson')->nam
 
 Route::middleware(['auth', 'is_role:customer'])->prefix('customer')->name('customer.')->group(function() {
     Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/my-requests', [CustomerDashboardController::class, 'myRequests'])->name('my-requests');
     Route::get('/tradesperson/{id}', [CustomerDashboardController::class, 'show'])->name('tradesperson.show');
 
     Route::get('/request/{tradespersonId}', [JobRequestController::class, 'create'])->name('request.create');
