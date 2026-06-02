@@ -40,6 +40,9 @@ Route::middleware(['auth', 'is_role:tradesperson'])->prefix('tradesperson')->nam
     Route::get('/job-requests', [TradespersonJobRequestController::class, 'index'])->name('job-requests.index');
     Route::patch('/job-requests/{id}/accept', [TradespersonJobRequestController::class, 'accept'])->name('job-requests.accept');
     Route::patch('/job-requests/{id}/decline', [TradespersonJobRequestController::class, 'decline'])->name('job-requests.decline');
+    Route::patch('/job-requests/{id}/progress', [TradespersonJobRequestController::class, 'updateProgress'])->name('job-requests.progress');
+    Route::get('/notifications', [TradespersonJobRequestController::class, 'notifications'])->name('notifications');
+    Route::patch('/notifications/read-all', [TradespersonJobRequestController::class, 'markAllRead'])->name('notifications.read-all');
 });
 
 Route::middleware(['auth', 'is_role:customer'])->prefix('customer')->name('customer.')->group(function() {

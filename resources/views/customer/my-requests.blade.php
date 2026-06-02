@@ -45,7 +45,25 @@
                         <div class="text-muted small">
                             {{ ucfirst($job->tradesperson->tradespersonProfile->category ?? '') }}
                             &middot; Scheduled: {{ $job->scheduled_date->format('M d, Y') }}
+                            @if($job->deadline)
+                                &middot; <span class="{{ $job->isOverdue() ? 'text-danger fw-semibold' : '' }}">
+                                    Deadline: {{ $job->deadline->format('M d, Y') }}
+                                </span>
+                            @endif
                         </div>
+                        @if($job->isOverdue())
+                            <span class="badge bg-danger mt-1"><i class="bi bi-exclamation-triangle me-1"></i>OVERDUE</span>
+                        @endif
+                        @if($job->progress > 0)
+                            <div class="mt-2">
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+                                    <span>Progress</span><span>{{ $job->progress }}%</span>
+                                </div>
+                                <div class="progress" style="height:6px;border-radius:3px">
+                                    <div class="progress-bar bg-primary" style="width:{{ $job->progress }}%"></div>
+                                </div>
+                            </div>
+                        @endif
                         <p class="mb-0 mt-1 small text-muted">{{ Str::limit($job->description, 80) }}</p>
                     </div>
                 </div>

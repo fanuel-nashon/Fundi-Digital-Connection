@@ -66,6 +66,15 @@
                 </li>
             </ul>
             <div class="d-flex align-items-center gap-3">
+                <a href="{{ route('tradesperson.notifications') }}" class="position-relative text-white-50" style="text-decoration:none">
+                    <i class="bi bi-bell fs-5"></i>
+                    @php $unread = auth()->user()->unreadNotifications->count(); @endphp
+                    @if($unread)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:.6rem">
+                            {{ $unread }}
+                        </span>
+                    @endif
+                </a>
                 <span class="text-white-50 small d-none d-md-inline">{{ auth()->user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}" class="m-0">
                     @csrf

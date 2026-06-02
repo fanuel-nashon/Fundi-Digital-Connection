@@ -23,6 +23,7 @@ class JobRequestController extends Controller
             'tradesperson_id' => ['required', 'exists:users,id'],
             'description'     => ['required', 'string', 'max:1000'],
             'scheduled_date'  => ['required', 'date', 'after_or_equal:today'],
+            'deadline'        => ['nullable', 'date', 'after_or_equal:scheduled_date'],
         ]);
 
         $jobRequest = JobRequest::create([
@@ -30,6 +31,7 @@ class JobRequestController extends Controller
             'tradesperson_id' => $request->tradesperson_id,
             'description'     => $request->description,
             'scheduled_date'  => $request->scheduled_date,
+            'deadline'        => $request->deadline,
             'status'          => 'pending',
         ]);
 

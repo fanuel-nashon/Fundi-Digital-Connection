@@ -11,12 +11,22 @@ class JobRequest extends Model
         'tradesperson_id',
         'status',
         'scheduled_date',
+        'deadline',
+        'progress',
         'description',
     ];
 
     protected $casts = [
         'scheduled_date' => 'date',
+        'deadline'       => 'date',
     ];
+
+    public function isOverdue(): bool
+    {
+        return $this->deadline
+            && $this->deadline->isPast()
+            && !in_array($this->status, ['complete', 'reviewed', 'declined']);
+    }
 
     public function customer()
     {

@@ -171,11 +171,51 @@ php artisan cache:clear
 # List all registered routes
 php artisan route:list
 
+# Manually trigger overdue job notifications
+php artisan jobs:check-deadlines
+
+# Run the scheduler locally (checks deadlines daily at 08:00)
+php artisan schedule:work
+
 # Create a new migration
 php artisan make:migration create_payments_table
 
 # Create a new controller
 php artisan make:controller Admin/PaymentController
+```
+
+---
+
+## Job Request Lifecycle
+
+```
+pending → accepted → in_progress → complete → reviewed
+                ↘ declined
+```
+
+| Status | Set by | Meaning |
+|--------|--------|---------|
+| `pending` | Customer | Request submitted, awaiting tradesperson response |
+| `accepted` | Tradesperson | Tradesperson confirmed the job |
+| `in_progress` | Tradesperson | Progress updated (25–75%) |
+| `complete` | Tradesperson (100%) or Customer | Job finished |
+| `reviewed` | Customer | Customer left a star rating + written review |
+| `declined` | Tradesperson | Request rejected |
+
+---
+
+## Deadline & Notifications
+
+- Customers can set an optional **deadline** when submitting a service request
+- The deadline must be on or after the start date
+- When a job's deadline passes and it is still active, the `jobs:check-deadlines`
+  command sends a **database notification** to both the tradesperson and the customer
+- Notifications are stored in the `notifications` table (Laravel's built-in system)
+- Tradesperson sees a bell icon with unread count in the navbar
+- To run deadline checks automatically, start the scheduler:
+
+```bash
+php artisan schedule:work
 ```
 
 ---
@@ -197,13 +237,18 @@ app/
 │   │   │   └── ReviewController.php      # Star rating + written review
 │   │   └── Tradesperson/
 │   │       ├── ProfileController.php     # Create & view profile
+│   │       └── JobRequestController.php  # Accept/decline, update progress, notifications
 │   │       └── JobRequestController.php  # Accept / decline requests
 │   └── Middleware/
 │       └── CheckRole.php                 # Role-based access guard
+├── Console/Commands/
+│   └── CheckJobDeadlines.php             # php artisan jobs:check-deadlines
+├── Notifications/
+│   └── JobOverdueNotification.php        # Database notification for overdue jobs
 ├── Models/
 │   ├── User.php
 │   ├── TradespersonProfile.php
-│   ├── JobRequest.php
+│   ├── JobRequest.php                    # includes deadline, progress, isOverdue()
 │   ├── Message.php
 │   └── Review.php
 

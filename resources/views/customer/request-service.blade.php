@@ -41,14 +41,26 @@
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="scheduled_date" class="form-label fw-medium">Preferred Date</label>
-                        <input type="date" name="scheduled_date" id="scheduled_date"
-                               class="form-control @error('scheduled_date') is-invalid @enderror"
-                               min="{{ date('Y-m-d') }}" value="{{ old('scheduled_date') }}" required>
-                        @error('scheduled_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="scheduled_date" class="form-label fw-medium">Preferred Start Date</label>
+                            <input type="date" name="scheduled_date" id="scheduled_date"
+                                   class="form-control @error('scheduled_date') is-invalid @enderror"
+                                   min="{{ date('Y-m-d') }}" value="{{ old('scheduled_date') }}" required>
+                            @error('scheduled_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="deadline" class="form-label fw-medium">
+                                Deadline <span class="text-muted fw-normal">(optional)</span>
+                            </label>
+                            <input type="date" name="deadline" id="deadline"
+                                   class="form-control @error('deadline') is-invalid @enderror"
+                                   min="{{ date('Y-m-d') }}" value="{{ old('deadline') }}">
+                            @error('deadline')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <div class="text-muted" style="font-size:.75rem;margin-top:.25rem">
+                                <i class="bi bi-info-circle me-1"></i>Tradesperson will be notified if job is not done by this date.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex gap-2">
