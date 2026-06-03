@@ -102,16 +102,27 @@
                 </div>
 
                 {{-- Update progress form --}}
-                <form method="POST" action="{{ route('tradesperson.job-requests.progress', $job->id) }}"
-                      class="d-flex align-items-center gap-2">
-                    @csrf @method('PATCH')
-                    <select name="progress" class="form-select form-select-sm" style="max-width:200px">
-                        @foreach([0 => 'Not Started', 25 => 'Started (25%)', 50 => 'Halfway (50%)', 75 => 'Almost Done (75%)', 100 => 'Done — Mark Complete'] as $val => $label)
-                            <option value="{{ $val }}" {{ $job->progress == $val ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btn-sm btn-brand">Update</button>
-                </form>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <form method="POST" action="{{ route('tradesperson.job-requests.progress', $job->id) }}"
+                          class="d-flex align-items-center gap-2">
+                        @csrf @method('PATCH')
+                        <select name="progress" class="form-select form-select-sm" style="max-width:200px">
+                            @foreach([0 => 'Not Started', 25 => 'Started (25%)', 50 => 'Halfway (50%)', 75 => 'Almost Done (75%)', 100 => 'Done — Mark Complete'] as $val => $label)
+                                <option value="{{ $val }}" {{ $job->progress == $val ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-brand">Update</button>
+                    </form>
+                    <a href="{{ route('tradesperson.messages.index', $job->id) }}"
+                       class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-chat-dots me-1"></i>Messages
+                        @if($job->messages->count() > 0)
+                            <span class="badge bg-primary bg-opacity-25 text-primary ms-1" style="font-size:.65rem">
+                                {{ $job->messages->count() }}
+                            </span>
+                        @endif
+                    </a>
+                </div>
             </div>
         </div>
     </div>

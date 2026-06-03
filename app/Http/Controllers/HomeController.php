@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\TradespersonProfile;
-use Illuminate\Http\RedirectResponse;
 
 class HomeController extends Controller
 {
@@ -14,7 +13,6 @@ class HomeController extends Controller
             $role = auth()->user()->role;
             if ($role === 'admin')        return redirect(route('admin.dashboard'));
             if ($role === 'tradesperson') return redirect(route('tradesperson.tradesperson-dashboard'));
-            if ($role === 'customer')     return redirect(route('customer.dashboard'));
         }
 
         $query = TradespersonProfile::with('user')

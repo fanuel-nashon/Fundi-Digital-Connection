@@ -17,7 +17,8 @@ class CheckRole
     public function handle(Request $request, Closure $next, string $role): Response
     {
 
-        if(!auth::check() || !auth()->user()->hasRole($role)){
+        $user = auth()->user();
+        if (!$user || ($user->role !== $role && !$user->hasRole($role))) {
             abort(403, 'Access denied');
         }
 

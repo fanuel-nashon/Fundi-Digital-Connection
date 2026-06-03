@@ -66,12 +66,40 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link active" href="{{ route('home') }}">Find Tradespeople</a></li>
+                @auth
+                    @if(auth()->user()->role === 'customer')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('customer.my-requests') }}">
+                            <i class="bi bi-briefcase me-1"></i>My Requests
+                            @php
+                                $activeCount = \App\Models\JobRequest::where('customer_id', auth()->id())
+                                    ->whereIn('status', ['pending','accepted','in_progress'])->count();
+                            @endphp
+                            @if($activeCount > 0)
+                                <span class="badge ms-1" style="background:var(--brand);font-size:.65rem">{{ $activeCount }}</span>
+                            @endif
+                        </a>
+                    </li>
+                    @endif
+                @endauth
             </ul>
-            <div class="d-flex gap-2">
-                <a href="{{ route('login') }}" class="btn btn-sm btn-outline-light">Sign In</a>
-                <a href="{{ route('register') }}?role=customer" class="btn btn-sm" style="background:var(--brand);color:#fff;border:none">
-                    Register
-                </a>
+            <div class="d-flex gap-2 align-items-center">
+                @auth
+                    <span class="small d-none d-md-inline" style="color:rgba(255,255,255,.65)">
+                        <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
+                    </span>
+                    <form method="POST" action="{{ route('logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-outline-light">
+                            <i class="bi bi-box-arrow-right me-1"></i>Sign out
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline-light">Sign In</a>
+                    <a href="{{ route('register') }}?role=customer" class="btn btn-sm" style="background:var(--brand);color:#fff;border:none">
+                        Register
+                    </a>
+                @endauth
             </div>
         </div>
     </div>
@@ -85,14 +113,24 @@
                 <h1>Find Skilled<br><span>Tradespeople</span><br>Near You</h1>
                 <p class="mt-3 mb-4">Browse verified plumbers, electricians, carpenters, welders and masons across Tanzania. Read reviews, check availability, and request a service.</p>
                 <div class="d-flex gap-3 flex-wrap">
-                    <a href="{{ route('register') }}?role=customer"
-                       class="btn px-4 py-2 fw-semibold" style="background:var(--brand);color:#fff;border-radius:8px">
-                        <i class="bi bi-person-plus me-2"></i>Register as Customer
-                    </a>
-                    <a href="{{ route('register') }}?role=tradesperson"
-                       class="btn btn-outline-light px-4 py-2 fw-semibold" style="border-radius:8px">
-                        <i class="bi bi-tools me-2"></i>Post Your Services
-                    </a>
+                    @auth
+                        <a href="{{ route('customer.my-requests') }}"
+                           class="btn px-4 py-2 fw-semibold" style="background:var(--brand);color:#fff;border-radius:8px">
+                            <i class="bi bi-briefcase me-2"></i>My Requests
+                        </a>
+                        <a href="#listings" class="btn btn-outline-light px-4 py-2 fw-semibold" style="border-radius:8px">
+                            <i class="bi bi-search me-2"></i>Browse Tradespeople
+                        </a>
+                    @else
+                        <a href="{{ route('register') }}?role=customer"
+                           class="btn px-4 py-2 fw-semibold" style="background:var(--brand);color:#fff;border-radius:8px">
+                            <i class="bi bi-person-plus me-2"></i>Register as Customer
+                        </a>
+                        <a href="{{ route('register') }}?role=tradesperson"
+                           class="btn btn-outline-light px-4 py-2 fw-semibold" style="border-radius:8px">
+                            <i class="bi bi-tools me-2"></i>Post Your Services
+                        </a>
+                    @endauth
                 </div>
             </div>
             <div class="col-lg-6">
@@ -136,7 +174,7 @@
 </section>
 
 {{-- Tradesperson listing --}}
-<section class="py-5">
+<section class="py-5" id="listings">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
@@ -193,11 +231,23 @@
                             <small class="text-muted">{{ $profile->reviews }} review{{ $profile->reviews !== 1 ? 's' : '' }}</small>
                         </div>
 
-                        {{-- CTA: prompt register if not logged in --}}
-                        <a href="{{ route('register') }}?role=customer"
-                           class="btn-book w-100 text-center py-2 text-decoration-none d-block">
-                            <i class="bi bi-calendar-check me-1"></i>Book Service
-                        </a>
+                        @auth
+                            @if(auth()->user()->role === 'customer')
+                                <a href="{{ route('customer.tradesperson.show', $profile->user_id) }}"
+                                   class="btn-book w-100 text-center py-2 text-decoration-none d-block">
+                                    <i class="bi bi-calendar-check me-1"></i>Book Service
+                                </a>
+                            @else
+                                <span class="btn-book w-100 text-center py-2 d-block" style="opacity:.5;cursor:default">
+                                    <i class="bi bi-calendar-check me-1"></i>Book Service
+                                </span>
+                            @endif
+                        @else
+                            <a href="{{ route('register') }}?role=customer"
+                               class="btn-book w-100 text-center py-2 text-decoration-none d-block">
+                                <i class="bi bi-calendar-check me-1"></i>Book Service
+                            </a>
+                        @endauth
                     </div>
                 </div>
             </div>

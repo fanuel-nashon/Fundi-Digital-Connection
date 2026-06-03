@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
 
         if ($role === 'admin')        return redirect(route('admin.dashboard'));
         if ($role === 'tradesperson') return redirect(route('tradesperson.tradesperson-dashboard'));
-        if ($role === 'customer')     return redirect(route('customer.dashboard'));
+        if ($role === 'customer')     return redirect(route('home'));
 
         return redirect(route('dashboard', absolute: false));
     }

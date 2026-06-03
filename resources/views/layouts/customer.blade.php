@@ -36,7 +36,7 @@
 
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('customer.dashboard') }}">
+        <a class="navbar-brand" href="{{ route('home') }}">
             Fundi<span>Digital</span>
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -45,8 +45,8 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('customer.dashboard') ? 'active fw-semibold' : '' }}"
-                       href="{{ route('customer.dashboard') }}">
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active fw-semibold' : '' }}"
+                       href="{{ route('home') }}">
                         <i class="bi bi-search me-1"></i>Find Tradesperson
                     </a>
                 </li>

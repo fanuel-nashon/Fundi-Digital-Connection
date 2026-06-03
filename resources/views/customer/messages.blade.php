@@ -18,16 +18,17 @@
                         </small>
                     </div>
                     <span class="badge bg-{{ match($jobRequest->status) {
-                        'pending'   => 'warning',
-                        'accepted'  => 'info',
-                        'complete'  => 'success',
-                        'reviewed'  => 'secondary',
-                        default     => 'light'
-                    } }}">{{ ucfirst($jobRequest->status) }}</span>
+                        'pending'     => 'warning',
+                        'accepted'    => 'primary',
+                        'in_progress' => 'info',
+                        'complete'    => 'success',
+                        'reviewed'    => 'secondary',
+                        default       => 'light'
+                    } }} text-capitalize">{{ str_replace('_', ' ', $jobRequest->status) }}</span>
                 </div>
 
                 <div class="mt-3 d-flex gap-2 flex-wrap">
-                    @if($jobRequest->status === 'accepted')
+                    @if(in_array($jobRequest->status, ['accepted', 'in_progress']))
                         <form method="POST" action="{{ route('customer.messages.complete', $jobRequest->id) }}">
                             @csrf @method('PATCH')
                             <button type="submit" class="btn btn-sm btn-success">
@@ -93,8 +94,8 @@
         </div>
         @endif
 
-        <a href="{{ route('customer.dashboard') }}" class="btn btn-sm btn-outline-secondary mt-3">
-            &larr; Back to dashboard
+        <a href="{{ route('customer.my-requests') }}" class="btn btn-sm btn-outline-secondary mt-3">
+            <i class="bi bi-arrow-left me-1"></i>Back to My Requests
         </a>
     </div>
 </div>

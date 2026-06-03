@@ -7,7 +7,7 @@
         <h4 class="fw-bold mb-1">My Requests</h4>
         <p class="text-muted small mb-0">Track all your service requests and ongoing jobs</p>
     </div>
-    <a href="{{ route('customer.dashboard') }}" class="btn btn-sm btn-outline-secondary">
+    <a href="{{ route('home') }}" class="btn btn-sm btn-outline-secondary">
         <i class="bi bi-plus-lg me-1"></i>Find Tradesperson
     </a>
 </div>
@@ -18,21 +18,28 @@
             <i class="bi bi-briefcase fs-1 text-muted d-block mb-3"></i>
             <h5 class="fw-semibold">No requests yet</h5>
             <p class="text-muted mb-4">You haven't requested any services yet. Browse tradespeople to get started.</p>
-            <a href="{{ route('customer.dashboard') }}" class="btn btn-brand px-4">
+            <a href="{{ route('home') }}" class="btn btn-brand px-4">
                 <i class="bi bi-search me-1"></i>Browse Tradespeople
             </a>
         </div>
     </div>
 @else
-    {{-- Active jobs (pending / accepted) --}}
-    @php $active = $requests->whereIn('status', ['pending', 'accepted']); @endphp
+    {{-- Active jobs (pending / accepted / in_progress) --}}
+    @php $active = $requests->whereIn('status', ['pending', 'accepted', 'in_progress']); @endphp
     @if($active->count())
     <h6 class="text-uppercase fw-bold text-muted mb-3" style="font-size:.7rem;letter-spacing:.08em">
         Active <span class="badge bg-primary ms-1">{{ $active->count() }}</span>
     </h6>
 
     @foreach($active as $job)
-    <div class="card mb-3" style="border-left:3px solid {{ $job->status === 'accepted' ? '#2563eb' : '#f59e0b' }}">
+    @php
+        $borderColor = match($job->status) {
+            'accepted'    => '#2563eb',
+            'in_progress' => '#0891b2',
+            default       => '#f59e0b',
+        };
+    @endphp
+    <div class="card mb-3" style="border-left:3px solid {{ $borderColor }}">
         <div class="card-body">
             <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
                 <div class="d-flex align-items-center gap-3">
@@ -54,13 +61,16 @@
                         @if($job->isOverdue())
                             <span class="badge bg-danger mt-1"><i class="bi bi-exclamation-triangle me-1"></i>OVERDUE</span>
                         @endif
-                        @if($job->progress > 0)
+                        @if($job->status === 'in_progress' || $job->progress > 0)
                             <div class="mt-2">
-                                <div class="d-flex justify-content-between small text-muted mb-1">
-                                    <span>Progress</span><span>{{ $job->progress }}%</span>
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-muted">Work progress</span>
+                                    <span class="fw-semibold" style="color:#2563eb">{{ $job->progress }}%</span>
                                 </div>
-                                <div class="progress" style="height:6px;border-radius:3px">
-                                    <div class="progress-bar bg-primary" style="width:{{ $job->progress }}%"></div>
+                                <div class="progress" style="height:8px;border-radius:4px;background:#e2e8f0">
+                                    <div class="progress-bar"
+                                         style="width:{{ $job->progress }}%;background:linear-gradient(90deg,#2563eb,#0891b2);border-radius:4px;transition:width .4s ease">
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -69,7 +79,11 @@
                 </div>
                 <div class="d-flex flex-column align-items-end gap-2">
                     @php
-                        $badgeMap = ['pending' => ['warning','clock','Awaiting Response'], 'accepted' => ['primary','check-circle','In Progress']];
+                        $badgeMap = [
+                            'pending'     => ['warning',  'clock',           'Awaiting Response'],
+                            'accepted'    => ['primary',  'check-circle',    'Accepted'],
+                            'in_progress' => ['info',     'arrow-repeat',    'In Progress'],
+                        ];
                         [$color, $icon, $label] = $badgeMap[$job->status];
                     @endphp
                     <span class="badge bg-{{ $color }} bg-opacity-10 text-{{ $color }} border border-{{ $color }} border-opacity-25">

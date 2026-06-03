@@ -25,10 +25,11 @@ Fundi Digital Connection provides a public marketplace and a role-based manageme
 
 ### For Customers
 - Self-register and await admin approval before first login
-- Browse and filter tradespeople by **trade category**, **location**, and **star rating**
+- After login, land directly on the **public homepage** — no separate dashboard
+- Browse and filter tradespeople by **trade category** and **location**
 - Send service requests with a preferred date, description, and optional deadline
-- Communicate through a **built-in messaging thread** per job
-- Track all job requests in **My Requests** (pending, active, overdue, history)
+- **Communicate directly** with the tradesperson through a per-job message thread
+- Track all job requests in **My Requests** — including live work-progress bars for active jobs
 - Mark jobs as complete and leave a **star rating + written review**
 
 ### For Tradespeople
@@ -36,6 +37,7 @@ Fundi Digital Connection provides a public marketplace and a role-based manageme
 - Receive credentials by email once account is approved
 - Accept or decline incoming job requests
 - Update job **progress** (0 → 25 → 50 → 75 → 100%)
+- **Communicate directly** with the customer through a per-job message thread
 - Get notified when jobs pass their deadline
 - Manage a public profile visible on the homepage
 
@@ -53,7 +55,7 @@ Fundi Digital Connection provides a public marketplace and a role-based manageme
 
 | Feature | Description |
 |---------|-------------|
-| Public homepage | Browse tradesperson listings without an account |
+| Public homepage | Browse tradesperson listings without an account; serves as the customer's main view after login |
 | Self-registration | Customers and tradespeople register and await admin approval |
 | Admin approval flow | Admin reviews, approves/rejects, and emails credentials |
 | Role-based dashboards | Admin, Customer, and Tradesperson each have separate UIs |
@@ -61,7 +63,7 @@ Fundi Digital Connection provides a public marketplace and a role-based manageme
 | Service requests | Booking with start date, optional deadline, and full status tracking |
 | Job progress tracking | Tradesperson updates progress (0–100%), auto-completes at 100% |
 | Deadline notifications | Daily check sends overdue alerts to both parties |
-| In-app messaging | Threaded conversation per job request |
+| In-app messaging | Two-way threaded conversation per job — both customer and tradesperson can send messages |
 | Ratings & Reviews | 1–5 star rating + written review after completion |
 | Search & Filter | Filter by category, location, availability, and minimum rating |
 | Secure auth | Login, forgot/reset password, strong password enforcement |

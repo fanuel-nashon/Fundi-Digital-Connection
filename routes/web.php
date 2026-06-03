@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationContro
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Tradesperson\ProfileController as TradespersonProfileController;
 use App\Http\Controllers\Tradesperson\JobRequestController as TradespersonJobRequestController;
+use App\Http\Controllers\Tradesperson\MessageController as TradespersonMessageController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\Customer\JobRequestController;
 use App\Http\Controllers\Customer\MessageController;
@@ -22,7 +23,7 @@ Route::get('/dashboard', function () {
 
     if ($role === 'admin')       return redirect(route('admin.dashboard'));
     if ($role === 'tradesperson') return redirect(route('tradesperson.tradesperson-dashboard'));
-    if ($role === 'customer')    return redirect(route('customer.dashboard'));
+    if ($role === 'customer')    return redirect(route('home'));
 
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -47,10 +48,13 @@ Route::middleware(['auth', 'is_role:tradesperson'])->prefix('tradesperson')->nam
     Route::patch('/job-requests/{id}/progress', [TradespersonJobRequestController::class, 'updateProgress'])->name('job-requests.progress');
     Route::get('/notifications', [TradespersonJobRequestController::class, 'notifications'])->name('notifications');
     Route::patch('/notifications/read-all', [TradespersonJobRequestController::class, 'markAllRead'])->name('notifications.read-all');
+
+    Route::get('/messages/{jobRequestId}', [TradespersonMessageController::class, 'index'])->name('messages.index');
+    Route::post('/messages/{jobRequestId}', [TradespersonMessageController::class, 'store'])->name('messages.store');
 });
 
 Route::middleware(['auth', 'is_role:customer'])->prefix('customer')->name('customer.')->group(function() {
-    Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', fn() => redirect()->route('home'))->name('dashboard');
     Route::get('/my-requests', [CustomerDashboardController::class, 'myRequests'])->name('my-requests');
     Route::get('/tradesperson/{id}', [CustomerDashboardController::class, 'show'])->name('tradesperson.show');
 

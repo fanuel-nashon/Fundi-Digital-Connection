@@ -132,8 +132,10 @@ Visit: **http://127.0.0.1:8000**
 | Role | Login redirects to | Access |
 |------|--------------------|--------|
 | Admin | `/admin/dashboard` | Registrations, user management, stats |
-| Customer | `/customer/dashboard` | Browse, request, message, review |
-| Tradesperson | `/tradesperson/tradesperson-dashboard` | Jobs, profile |
+| Customer | `/` (homepage) | Browse tradespeople, request service, message, review |
+| Tradesperson | `/tradesperson/tradesperson-dashboard` | Jobs, profile, messaging |
+
+> Customers have no separate dashboard. The public homepage serves as their main view after login — it shows a customer-aware navbar with **My Requests** and makes **Book Service** buttons link directly to the booking flow.
 
 ---
 
@@ -207,6 +209,22 @@ php artisan schedule:work
 
 ---
 
+## Messaging
+
+Each job request has its own message thread. Both the **customer** and the **tradesperson** can send and receive messages for any active job.
+
+| Party | Route | View |
+|-------|-------|------|
+| Customer | `GET/POST /customer/messages/{jobRequestId}` | `customer.messages.index` |
+| Tradesperson | `GET/POST /tradesperson/messages/{jobRequestId}` | `tradesperson.messages.index` |
+
+- The customer accesses the thread from **My Requests** → "View Messages"
+- The tradesperson accesses it from **Job Requests** → active job card → "Messages" button (shows total message count)
+- Messages are stored in the `messages` table with `senders_id` and `receivers_id` foreign keys
+- The reply form is hidden once a job reaches `reviewed` or `declined` status
+
+---
+
 ## Job Request Lifecycle
 
 ```
@@ -258,8 +276,8 @@ app/
 │   │   │   └── ReviewController.php      # Star rating + written review
 │   │   └── Tradesperson/
 │   │       ├── ProfileController.php     # Create & view profile
-│   │       └── JobRequestController.php  # Accept/decline, update progress, notifications
-│   │       └── JobRequestController.php  # Accept / decline requests
+│   │       ├── JobRequestController.php  # Accept/decline, update progress, notifications
+│   │       └── MessageController.php     # Send & receive messages per job
 │   └── Middleware/
 │       └── CheckRole.php                 # Role-based access guard
 ├── Console/Commands/
@@ -300,7 +318,8 @@ resources/views/
 │   ├── dashboard.blade.php
 │   ├── profile.blade.php
 │   ├── create-profile.blade.php
-│   └── job-requests.blade.php
+│   ├── job-requests.blade.php
+│   └── messages.blade.php                # Per-job message thread (tradesperson side)
 └── auth/ (login, forgot-password, reset-password)
 
 routes/

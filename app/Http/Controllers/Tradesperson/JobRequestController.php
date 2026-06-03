@@ -10,7 +10,7 @@ class JobRequestController extends Controller
 {
     public function index()
     {
-        $jobRequests = JobRequest::with('customer')
+        $jobRequests = JobRequest::with(['customer', 'messages'])
             ->where('tradesperson_id', auth()->id())
             ->latest()
             ->get();
