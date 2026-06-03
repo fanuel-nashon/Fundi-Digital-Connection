@@ -14,24 +14,38 @@ On the other side, skilled tradespeople have no structured way to advertise thei
 
 ## The Solution
 
-Fundi Digital Connection provides a role-based platform with three distinct user groups:
+Fundi Digital Connection provides a public marketplace and a role-based management platform:
+
+### Public Homepage
+- Anyone can browse available tradespeople without logging in
+- Filter by trade category and location
+- Each card shows name, category, bio, star rating, and availability
+- **"Book Service"** prompts the visitor to register as a customer
+- **"Post My Services"** prompts the visitor to register as a tradesperson
 
 ### For Customers
-- Browse and filter tradespeople by **trade category**, **location**, **availability**, and **star rating**
-- View detailed profiles including bio and customer reviews
-- Send service requests with a preferred date and job description
-- Communicate with the tradesperson through a **built-in messaging thread**
+- Self-register and await admin approval before first login
+- Browse and filter tradespeople by **trade category**, **location**, and **star rating**
+- Send service requests with a preferred date, description, and optional deadline
+- Communicate through a **built-in messaging thread** per job
+- Track all job requests in **My Requests** (pending, active, overdue, history)
 - Mark jobs as complete and leave a **star rating + written review**
 
 ### For Tradespeople
-- Set up a public profile with bio, trade category, and availability status
-- Receive and manage job requests — **accept or decline** with one click
-- Track job history (pending → accepted → complete → reviewed)
+- Self-register with trade category and bio; await admin approval
+- Receive credentials by email once account is approved
+- Accept or decline incoming job requests
+- Update job **progress** (0 → 25 → 50 → 75 → 100%)
+- Get notified when jobs pass their deadline
+- Manage a public profile visible on the homepage
 
 ### For Admins
-- Create and manage all user accounts (customers, tradespeople, other admins)
-- Monitor platform activity through a central dashboard
-- View user statistics by role
+- Review **pending registrations** and approve or reject with one click
+- On approval: a temporary password is generated and emailed to the user
+- On rejection: a notification email is sent with an optional reason
+- Create accounts directly (bypasses approval, account is immediately active)
+- Full user CRUD — edit, suspend, or delete accounts
+- Dashboard with live stats and pending account alerts
 
 ---
 
@@ -39,14 +53,18 @@ Fundi Digital Connection provides a role-based platform with three distinct user
 
 | Feature | Description |
 |---------|-------------|
-| Role-based access | Admin, Customer, and Tradesperson roles with separate dashboards |
+| Public homepage | Browse tradesperson listings without an account |
+| Self-registration | Customers and tradespeople register and await admin approval |
+| Admin approval flow | Admin reviews, approves/rejects, and emails credentials |
+| Role-based dashboards | Admin, Customer, and Tradesperson each have separate UIs |
 | Tradesperson profiles | Bio, trade category, availability, star rating, written reviews |
-| Service requests | Job booking with description, scheduled date, and status tracking |
-| Messaging | In-app conversation thread linked to each job request |
-| Ratings & Reviews | 1–5 star rating plus written review after job completion |
+| Service requests | Booking with start date, optional deadline, and full status tracking |
+| Job progress tracking | Tradesperson updates progress (0–100%), auto-completes at 100% |
+| Deadline notifications | Daily check sends overdue alerts to both parties |
+| In-app messaging | Threaded conversation per job request |
+| Ratings & Reviews | 1–5 star rating + written review after completion |
 | Search & Filter | Filter by category, location, availability, and minimum rating |
 | Secure auth | Login, forgot/reset password, strong password enforcement |
-| Admin user management | Admin-only account creation — no public registration |
 
 ---
 
@@ -65,9 +83,10 @@ Fundi Digital Connection provides a role-based platform with three distinct user
 | Layer | Technology |
 |-------|-----------|
 | Backend | Laravel 12 (PHP 8.2) |
-| Frontend | Bootstrap 5.3, Bootstrap Icons |
+| Frontend | Bootstrap 5.3, Bootstrap Icons, SweetAlert2 |
 | Database | MySQL 8 |
 | Auth | Laravel Breeze + Spatie Permission |
+| Notifications | Laravel Database + Mail notifications |
 | Mailing | Log driver (dev) / SMTP (production) |
 
 ---
@@ -76,15 +95,20 @@ Fundi Digital Connection provides a role-based platform with three distinct user
 
 | Requirement | Status |
 |-------------|--------|
+| Public tradesperson listing | ✅ Complete |
+| Customer & tradesperson self-registration | ✅ Complete |
+| Admin approval flow + email credentials | ✅ Complete |
 | User authentication & roles | ✅ Complete |
 | Customer search & filter | ✅ Complete |
 | Ratings & written reviews | ✅ Complete |
-| Job request tracking (4 stages) | ✅ Complete |
+| Job request tracking (6 stages) | ✅ Complete |
+| Job progress updates | ✅ Complete |
+| Deadline tracking & overdue notifications | ✅ Complete |
 | In-app messaging | ✅ Complete |
-| Service booking with date | ✅ Complete |
+| Service booking with date & deadline | ✅ Complete |
 | Payment processing | 🔲 Planned |
 | Calendar scheduling interface | 🔲 Planned |
-| Real-time notifications | 🔲 Planned |
+| Real-time notifications (Echo/Pusher) | 🔲 Planned |
 
 ---
 

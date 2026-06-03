@@ -131,11 +131,36 @@ Visit: **http://127.0.0.1:8000**
 
 | Role | Login redirects to | Access |
 |------|--------------------|--------|
-| Admin | `/admin/dashboard` | User management, stats |
+| Admin | `/admin/dashboard` | Registrations, user management, stats |
 | Customer | `/customer/dashboard` | Browse, request, message, review |
 | Tradesperson | `/tradesperson/tradesperson-dashboard` | Jobs, profile |
 
-> **Note:** Public registration is disabled. All accounts must be created by an admin through `/admin/users/create`.
+---
+
+## Registration & Approval Flow
+
+Self-registration is open to **customers** and **tradespeople**. Admin accounts are created only through the admin panel.
+
+1. Visitor clicks **Register** on the homepage (role pre-selected via `?role=customer` or `?role=tradesperson`)
+2. Fills in name, email, location — and category + bio for tradespeople
+3. Account saved with `status = pending`, **no password set yet**
+4. Visitor is redirected to a "pending approval" page
+5. Admin opens **Registrations** in the sidebar, reviews, and clicks **Approve** or **Reject**
+6. **On Approve:** 10-character temporary password generated → account activated → credentials emailed
+7. **On Reject:** Optional reason entered → rejection email sent to applicant
+8. Approved user receives credentials by email and can now sign in
+
+> In development (`MAIL_MAILER=log`), approval emails are written to `storage/logs/laravel.log`.
+> Search for `AccountApprovedNotification` to find the temporary credentials.
+
+### Account statuses
+
+| Status | Meaning |
+|--------|---------|
+| `pending` | Registered, awaiting admin review — cannot log in |
+| `active` | Approved, can log in |
+| `suspended` | Blocked from logging in |
+| `rejected` | Application declined |
 
 ---
 
@@ -177,11 +202,7 @@ php artisan jobs:check-deadlines
 # Run the scheduler locally (checks deadlines daily at 08:00)
 php artisan schedule:work
 
-# Create a new migration
-php artisan make:migration create_payments_table
 
-# Create a new controller
-php artisan make:controller Admin/PaymentController
 ```
 
 ---
