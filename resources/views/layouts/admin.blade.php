@@ -106,6 +106,15 @@
 
     <div class="sb-section">Management</div>
     <ul class="sb-nav">
+        <li>
+            <a href="{{ route('admin.registrations.index') }}" class="nav-link {{ request()->routeIs('admin.registrations.*') ? 'active' : '' }}">
+                <i class="bi bi-person-plus-fill"></i> Registrations
+                @php $pendingCount = \App\Models\User::where('status','pending')->count(); @endphp
+                @if($pendingCount)
+                    <span class="badge bg-warning text-dark ms-auto" style="font-size:.62rem">{{ $pendingCount }}</span>
+                @endif
+            </a>
+        </li>
         <li><a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
             <i class="bi bi-people-fill"></i> Users
         </a></li>

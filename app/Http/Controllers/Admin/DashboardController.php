@@ -11,11 +11,12 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'total'       => User::count(),
-            'admins'      => User::where('role', 'admin')->count(),
-            'tradespeople'=> User::where('role', 'tradesperson')->count(),
-            'customers'   => User::where('role', 'customer')->count(),
-            'pending_jobs'=> JobRequest::where('status', 'pending')->count(),
+            'total'            => User::where('status', 'active')->count(),
+            'admins'           => User::where('role', 'admin')->where('status', 'active')->count(),
+            'tradespeople'     => User::where('role', 'tradesperson')->where('status', 'active')->count(),
+            'customers'        => User::where('role', 'customer')->where('status', 'active')->count(),
+            'pending_jobs'     => JobRequest::where('status', 'pending')->count(),
+            'pending_accounts' => User::where('status', 'pending')->count(),
         ];
 
         $recentUsers = User::latest()->take(6)->get();

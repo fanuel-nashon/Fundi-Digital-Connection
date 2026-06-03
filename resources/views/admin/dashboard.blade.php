@@ -29,6 +29,19 @@
             <i class="bi bi-hourglass-split ico"></i>
         </div>
     </div>
+    @if($stats['pending_accounts'] > 0)
+    <div class="col-12">
+        <a href="{{ route('admin.registrations.index') }}" class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none"
+           style="background:#fffbeb;border:1px solid #fde68a">
+            <i class="bi bi-person-exclamation fs-4 text-warning"></i>
+            <div>
+                <div class="fw-semibold text-dark">{{ $stats['pending_accounts'] }} account{{ $stats['pending_accounts'] > 1 ? 's' : '' }} awaiting approval</div>
+                <div class="text-muted small">Click to review and approve registrations</div>
+            </div>
+            <i class="bi bi-arrow-right ms-auto text-warning"></i>
+        </a>
+    </div>
+    @endif
 </div>
 
 {{-- Recent users --}}

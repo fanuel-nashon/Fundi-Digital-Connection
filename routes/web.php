@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Tradesperson\ProfileController as TradespersonProfileController;
 use App\Http\Controllers\Tradesperson\JobRequestController as TradespersonJobRequestController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
@@ -11,9 +13,8 @@ use App\Http\Controllers\Customer\JobRequestController;
 use App\Http\Controllers\Customer\MessageController;
 use App\Http\Controllers\Customer\ReviewController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/register/pending', fn() => view('auth.pending'))->name('register.pending');
 
 Route::get('/dashboard', function () {
     $user = auth()->user();
@@ -29,6 +30,9 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'is_role:admin'])->prefix('admin')->name('admin.')->group(function() {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UsersController::class);
+    Route::get('/registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
+    Route::post('/registrations/{id}/approve', [AdminRegistrationController::class, 'approve'])->name('registrations.approve');
+    Route::post('/registrations/{id}/reject', [AdminRegistrationController::class, 'reject'])->name('registrations.reject');
 });
 
 Route::middleware(['auth', 'is_role:tradesperson'])->prefix('tradesperson')->name('tradesperson.')->group(function() {
