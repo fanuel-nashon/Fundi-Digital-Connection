@@ -25,7 +25,12 @@ class User extends Authenticatable
         'password',
         'role',
         'location',
+        'status',
     ];
+
+    public function isActive(): bool   { return $this->status === 'active'; }
+    public function isPending(): bool  { return $this->status === 'pending'; }
+    public function isSuspended(): bool{ return $this->status === 'suspended'; }
 
     /**
      * The attributes that should be hidden for serialization.
