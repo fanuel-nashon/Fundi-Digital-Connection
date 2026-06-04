@@ -56,6 +56,8 @@ Mail is configured to use the log driver by default (emails are written to `stor
 MAIL_MAILER=log
 ```
 
+> Location search supports common aliases and normalized names, so inputs like `Dar`, `DSM`, or `Stone Town` map to the correct tradesperson location.
+
 ### 5. Create the database
 ```sql
 CREATE DATABASE fundi_digital_connection
@@ -145,6 +147,7 @@ Self-registration is open to **customers** and **tradespeople**. Admin accounts 
 
 1. Visitor clicks **Register** on the homepage (role pre-selected via `?role=customer` or `?role=tradesperson`)
 2. Fills in name, email, location — and category + bio for tradespeople
+   - Location is normalized on registration so customer search matches stored tradesperson locations reliably
 3. Account saved with `status = pending`, **no password set yet**
 4. Visitor is redirected to a "pending approval" page
 5. Admin opens **Registrations** in the sidebar, reviews, and clicks **Approve** or **Reject**

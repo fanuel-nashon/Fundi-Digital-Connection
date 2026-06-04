@@ -27,6 +27,7 @@ Fundi Digital Connection provides a public marketplace and a role-based manageme
 - Self-register and await admin approval before first login
 - After login, land directly on the **public homepage** — no separate dashboard
 - Browse and filter tradespeople by **trade category** and **location**
+- Search uses mapped location aliases, so common inputs like `Dar`, `DSM`, or `Stone Town` match the correct city record
 - Send service requests with a preferred date, description, and optional deadline
 - **Communicate directly** with the tradesperson through a per-job message thread
 - Track all job requests in **My Requests** — including live work-progress bars for active jobs
@@ -65,7 +66,7 @@ Fundi Digital Connection provides a public marketplace and a role-based manageme
 | Deadline notifications | Daily check sends overdue alerts to both parties |
 | In-app messaging | Two-way threaded conversation per job — both customer and tradesperson can send messages |
 | Ratings & Reviews | 1–5 star rating + written review after completion |
-| Search & Filter | Filter by category, location, availability, and minimum rating |
+| Search & Filter | Filter by category, location, availability, and minimum rating; location input is mapped to normalized stored cities |
 | Secure auth | Login, forgot/reset password, strong password enforcement |
 
 ---
