@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
-            'location' => $request->location,
+            'location' => $this->resolveLocationSearch($request->location)[0],
             'role'     => $request->role,
             'status'   => 'pending',
             'password' => null,

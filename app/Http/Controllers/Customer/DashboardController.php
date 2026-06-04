@@ -21,8 +21,18 @@ class DashboardController extends Controller
         }
 
         if (request('location')) {
-            $query->whereHas('user', function ($q) {
-                $q->where('location', 'like', '%' . request('location') . '%');
+            $locations = $this->resolveLocationSearch(request('location'));
+
+            $query->whereHas('user', function ($q) use ($locations) {
+                $q->where(function ($q) use ($locations) {
+                    foreach ($locations as $index => $mappedLocation) {
+                        if ($index === 0) {
+                            $q->where('location', 'like', '%' . $mappedLocation . '%');
+                        } else {
+                            $q->orWhere('location', 'like', '%' . $mappedLocation . '%');
+                        }
+                    }
+                });
             });
         }
 
